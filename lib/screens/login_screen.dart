@@ -5,11 +5,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:shop_app/cache_helper/cache_helper.dart';
-import 'package:shop_app/cubit/login_cubit.dart';
+import '../cubit/login/login_cubit.dart';
 import 'package:shop_app/screens/home_screen.dart';
 import 'package:shop_app/screens/register_screen.dart';
 
-import '../componint.dart';
+import '../components/componint.dart';
 
 class LoginScreen extends StatelessWidget {
   TextEditingController emailController = TextEditingController();

@@ -37,6 +37,8 @@ dependencies:
   shared_preferences: ^2.0.11
   fluttertoast: ^8.0.2
   motion_toast: ^2.0.0
+  animated_bottom_navigation_bar: ^0.3.2
+  carousel_slider: ^4.0.0
 
 
 

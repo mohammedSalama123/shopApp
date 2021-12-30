@@ -15,7 +15,7 @@ class LoginCubit extends Cubit<LoginStates> {
  late LoginModel loginModel;
   void  userLogin({required String email,required String password}){
     emit(LoginLoadingState());
-    WebService.PostData(url: Login, data: {
+    WebService.PostData(url: login, data: {
       'email':email,
       'password':password,
     }).then((value){

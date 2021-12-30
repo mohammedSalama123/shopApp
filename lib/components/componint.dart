@@ -6,15 +6,14 @@ import 'package:motion_toast/resources/arrays.dart';
 void showToast({required String msg,required ToastStates state,context}){
   MotionToast(
     primaryColor: choseToastColor(state),
-    backgroundType:  BACKGROUND_TYPE.transparent,
+    backgroundType:  BACKGROUND_TYPE.solid,
     secondaryColor:  Colors.transparent,
-
     descriptionStyle: TextStyle(color: Colors.black,),
     description: msg,
     animationType: ANIMATION.fromBottom,
     dismissable: true,
     animationCurve: Curves.elasticInOut,
-    toastDuration: Duration(milliseconds: 3000),
+    toastDuration: const Duration(milliseconds: 4000),
     icon: Icons.message,
     iconSize: 20,
 
