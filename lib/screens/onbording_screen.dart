@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shop_app/cache_helper/cache_helper.dart';
 import 'package:shop_app/modeles/onbordingmodel.dart';
 import 'package:shop_app/screens/login_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -32,6 +33,19 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
   var bordingController = PageController();
 
   bool isLast = false;
+  void submit(){
+    CacheHelper.saveDate(key: 'onBording', value: true,).then((value){
+      if(value){
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+              (route) => false,
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +57,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ),
-                      (route) => false,
-                );
+                submit();
               },
               child: const Text(
                 'Skip',
@@ -60,87 +68,86 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  itemBuilder: (context, index) {
-                    return buildBording(onBording[index]);
-                  },
-                  itemCount: onBording.length,
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  controller: bordingController,
-                  onPageChanged: (int index) {
-                    if (index == onBording.length - 1) {
-                      setState(() {
-                        isLast = true;
-                      });
-                    } else {
-                      setState(() {
-                        isLast = false;
-                      });
+          child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                Expanded(
+
+                  child: PageView.builder(
+                    itemBuilder: (context, index) {
+                      return buildBording(onBording[index]);
+                    },
+                    itemCount: onBording.length,
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    controller: bordingController,
+                    onPageChanged: (int index) {
+                      if (index == onBording.length - 1) {
+                        setState(() {
+                          isLast = true;
+                        });
+                      } else {
+                        setState(() {
+                          isLast = false;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  child: const Text('Netx'),
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xff170C51),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  onPressed: () {
+                    bordingController.nextPage(
+                        duration: const Duration(
+                          milliseconds: 800,
+                        ),
+                        curve: Curves.decelerate);
+                    if (isLast) {
+                     submit();
                     }
                   },
                 ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              ElevatedButton(
-                child: const Text('Netx'),
-                style: ElevatedButton.styleFrom(
-                  primary: const Color(0xff170C51),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                  ),
+                const SizedBox(
+                  height: 30,
                 ),
-                onPressed: () {
-                  bordingController.nextPage(
-                      duration: const Duration(
-                        milliseconds: 800,
-                      ),
-                      curve: Curves.decelerate);
-                  if (isLast) {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                      (route) => false,
-                    );
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              SmoothPageIndicator(
-                controller: bordingController,
-                effect: const ExpandingDotsEffect(
-                  activeDotColor: Color(0xff170C51),
-                  dotColor: Colors.grey,
-                  dotHeight: 10,
-                  dotWidth: 20,
-                  spacing: 20,
-                  radius: 12,
+                SmoothPageIndicator(
+                  controller: bordingController,
+                  effect: const ExpandingDotsEffect(
+                    activeDotColor: Color(0xff170C51),
+                    dotColor: Colors.grey,
+                    dotHeight: 10,
+                    dotWidth: 20,
+                    spacing: 20,
+                    radius: 12,
+                  ),
+                  count: onBording.length,
                 ),
-                count: onBording.length,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-            ],
+                const SizedBox(
+                  height: 30,
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
 
   Widget buildBording(OnBordingModel onBordingModel) {
     return Column(
@@ -148,6 +155,7 @@ class _OnBordingScreenState extends State<OnBordingScreen> {
         Expanded(
           child: Image(
             image: AssetImage(onBordingModel.image),
+
           ),
         ),
         SizedBox(
